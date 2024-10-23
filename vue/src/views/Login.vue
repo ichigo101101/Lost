@@ -9,6 +9,12 @@
         <el-form-item prop="password">
           <el-input prefix-icon="el-icon-lock" placeholder="请输入密码" show-password  v-model="form.password"></el-input>
         </el-form-item>
+          <el-form-item>
+              <el-select v-model="form.role" placeholder="请选择角色" style="width: 100%">
+                  <el-option label="管理员" value="ADMIN"></el-option>
+                  <el-option label="用户" value="USER"></el-option>
+              </el-select>
+          </el-form-item>
         <el-form-item>
           <el-button style="width: 100%; background-color: #333; border-color: #333; color: white" @click="login">登 录</el-button>
         </el-form-item>
@@ -28,7 +34,7 @@ export default {
   name: "Login",
   data() {
     return {
-      form: { role: 'ADMIN' },
+      form: { role: '' },
       rules: {
         username: [
           { required: true, message: '请输入账号', trigger: 'blur' },
