@@ -31,42 +31,49 @@
 
 <script>
 export default {
-  name: "Login",
-  data() {
-    return {
-      form: { role: '' },
-      rules: {
-        username: [
-          { required: true, message: '请输入账号', trigger: 'blur' },
-        ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-        ]
-      }
-    }
-  },
-  created() {
-
-  },
-  methods: {
-    login() {
-      this.$refs['formRef'].validate((valid) => {
-        if (valid) {
-          // 验证通过
-          this.$request.post('/login', this.form).then(res => {
-            if (res.code === '200') {
-              localStorage.setItem("xm-user", JSON.stringify(res.data))  // 存储用户数据
-              this.$router.push('/')  // 跳转主页
-              this.$message.success('登录成功')
-            } else {
-              this.$message.error(res.msg)
+    name: "Login",
+    data() {
+        return {
+            form: {role: ''},
+            rules: {
+                username: [
+                    {required: true, message: '请输入账号', trigger: 'blur'},
+                ],
+                password: [
+                    {required: true, message: '请输入密码', trigger: 'blur'},
+                ]
             }
-          })
         }
-      })
-    }
-  }
+    },
+    created() {
+
+    },
+    methods: {
+        login() {
+            this.$refs['formRef'].validate((valid) => {
+                if (valid) {
+                    // 验证通过
+                    this.$request.post('/login', this.form).then(res => {
+                        if (res.code === '200') {
+                            localStorage.setItem("xm-user", JSON.stringify(res.data))  // 存储用户数据
+                            if(res.data.role === 'ADMIN'){
+                            this.$router.push('/')  // 跳转主页
+                        }else {
+                            location.href = '/front/home'
+                        }
+                        this.$message.success('登录成功')
+                    } else {
+                        this.$message.error(res.msg)
+                    }
+                })
+        }
+    })
 }
+}
+
+}
+
+
 </script>
 
 <style scoped>
