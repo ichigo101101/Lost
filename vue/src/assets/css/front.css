@@ -76,3 +76,18 @@
     background-color: #f8db71 !important;
     font-weight: 550;
 }
+
+.card {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+}
+.transition {
+    cursor: pointer;
+    transition: all 0.3s ease; /* 添加平滑过渡效果 */
+}
+
+.transition:hover {
+    transform: scale(1.05); /* 鼠标悬停时放大图片 */
+}
