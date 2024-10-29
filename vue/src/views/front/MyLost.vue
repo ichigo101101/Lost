@@ -16,7 +16,11 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="name" label="物品名称" show-overflow-tooltip></el-table-column>
-                    <el-table-column prop="content" label="物品描述"></el-table-column>
+                    <el-table-column prop="content" label="物品描述">
+                        <template v-slot="scope">
+                            <el-button type="primary" size="mini" @click="viewEditor(scope.row.content)">点击查看</el-button>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="status" label="状态"></el-table-column>
                     <el-table-column prop="time" label="时间"></el-table-column>
 
@@ -41,7 +45,7 @@
                 </div>
             </div>
 
-            <el-dialog title="信息" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
+            <el-dialog title="信息" :visible.sync="fromVisible" width="55%" :close-on-click-modal="false" destroy-on-close>
                 <el-form label-width="100px" style="padding-right: 50px" :model="form">
                     <el-form-item prop="img" label="物品图片">
                         <el-upload
@@ -64,7 +68,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item prop="content" label="物品描述">
-                        <el-input type="textarea" :rows="5" v-model="form.content" autocomplete="off"></el-input>
+                        <div id="editor"></div>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -72,11 +76,17 @@
                     <el-button type="primary" @click="save">确 定</el-button>
                 </div>
             </el-dialog>
+
+            <el-dialog title="详细信息" :visible.sync="viewVisible" width="55%" :close-on-click-modal="false" destroy-on-close>
+                <div v-html="viewData" class="w-e-text w-e-text-container"></div>
+            </el-dialog>
         </div>
     </div>
 </template>
 
 <script>
+
+    import E from 'wangeditor'
 
     export default {
 
@@ -89,6 +99,9 @@
                 total: 0,
                 fromVisible: false,
                 form: {},
+                editor: null,
+                viewData: null,
+                viewVisible: false,
             }
         },
         mounted() {
@@ -96,6 +109,22 @@
         },
         // methods：本页面所有的点击事件或者其他函数定义区
         methods: {
+            viewEditor(content) {
+                this.viewData = content
+                this.viewVisible = true
+            },
+            initWangEditor(content) {
+                this.$nextTick(() => {
+                    this.editor = new E('#editor')
+                    this.editor.config.placeholder = '请输入内容'
+                    this.editor.config.uploadFileName = 'file'
+                    this.editor.config.uploadImgServer = 'http://localhost:9090/files/wang/upload'
+                    this.editor.create()
+                    setTimeout(() => {
+                        this.editor.txt.html(content)
+                    })
+                })
+            },
             load(pageNum) {
                 if (pageNum) this.pageNum = pageNum
                 this.$request.get('/lost/selectPage', {
@@ -111,10 +140,12 @@
             },
             handleAdd() {
                 this.form = {}
+                this.initWangEditor('')
                 this.fromVisible = true
             },
             handleEdit(row) {
                 this.form = JSON.parse(JSON.stringify(row))
+                this.initWangEditor(this.form.content || '')
                 this.fromVisible = true
             },
             del(id) {
@@ -131,6 +162,7 @@
                 })
             },
             save() {
+                this.form.content = this.editor.txt.html()
                 this.$request({
                     url: this.form.id ? '/lost/update' : '/lost/add',
                     method: this.form.id ? 'PUT' : 'POST',
