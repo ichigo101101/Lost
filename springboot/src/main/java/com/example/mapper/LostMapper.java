@@ -1,6 +1,7 @@
 package com.example.mapper;
 
 import com.example.entity.Lost;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -31,4 +32,6 @@ public interface LostMapper {
      */
     List<Lost> selectAll(Lost lost);
 
+    @Select("select * from lost where status = '丢失中' order by id desc limit 4")
+    List<Lost> selectNew4();
 }

@@ -1,9 +1,12 @@
 package com.example.service;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.example.entity.Account;
 import com.example.entity.Lost;
+import com.example.entity.User;
 import com.example.mapper.LostMapper;
+import com.example.mapper.UserMapper;
 import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,6 +21,8 @@ public class LostService {
 
     @Resource
     private LostMapper lostMapper;
+    @Resource
+    private UserMapper userMapper;
 
     /**
      * 新增
@@ -75,4 +80,14 @@ public class LostService {
         return PageInfo.of(list);
     }
 
+    public List<Lost> selectNew4() {
+        List<Lost> list = lostMapper.selectNew4();
+        for (Lost lost : list) {
+            User user = userMapper.selectById(lost.getUserId());
+            if (ObjectUtil.isNotEmpty(user)) {
+                lost.setUserName(user.getName());
+            }
+        }
+        return list;
+    }
 }

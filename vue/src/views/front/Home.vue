@@ -16,14 +16,14 @@
                             </div>
                             <div style="margin-top: 40px">
                                 <el-row :gutter="20">
-                                    <el-col :span="12">
+                                    <el-col :span="12" v-for="item in lostData" style="margin-bottom: 20px">
                                         <div class="transition card">
                                             <div style="display: flex">
-                                                <img src="@/assets/imgs/logo.png" alt="" style="height: 75px; width: 75px; border: 1px solid #eeeeee; border-radius: 10px">
+                                                <img :src="item.img" alt="" style="height: 75px; width: 75px; border: 1px solid #eeeeee; border-radius: 10px">
                                                 <div style="margin-left: 10px">
-                                                    <div style="font-weight: 550; color: #ef5d26">李宁羽毛球拍</div>
-                                                    <div style="margin-top: 10px; color: #666666">发布人：张三</div>
-                                                    <div style="margin-top: 5px; color: #666666">时间：2024-01-17</div>
+                                                    <div style="font-weight: 550; color: #ef5d26">{{ item.name }}</div>
+                                                    <div style="margin-top: 10px; color: #666666">发布人：{{ item.userName }}</div>
+                                                    <div style="margin-top: 5px; color: #666666">时间：{{ item.time }}</div>
                                                 </div>
                                             </div>
                                             <div style="margin-top: 20px">
@@ -112,13 +112,25 @@
                     require('@/assets/imgs/lun-1.png'),
 
                 ],
+                lostData:[],
+                foundData:[],
             }
         },
         mounted() {
+            this.loadLostData()
 
         },
         // methods：本页面所有的点击事件或者其他函数定义区
         methods: {
+            loadLostData() {
+                this.$request.get('/lost/selectNew4').then(res => {
+                    if (res.code === '200') {
+                        this.lostData = res.data
+                    } else {
+                        this.$message.error(res.msg)
+                    }
+                })
+            },
 
         }
     }

@@ -81,4 +81,10 @@ public class LostController {
         return Result.success(page);
     }
 
+    @GetMapping("/selectNew4")
+    public Result selectNew4() {
+        List<Lost> list = lostService.selectNew4();
+        return Result.success(list);
+    }
+
 }
