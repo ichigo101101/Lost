@@ -21,7 +21,8 @@
                             </div>
                             <div style="margin-top: 20px">
                                 <el-button type="info" size="mini" @click="viewContent(item.content)">查看详情</el-button>
-                                <el-button type="success" size="mini">联系失主</el-button>
+                                <el-button type="success" size="mini" @click="contact(item)">联系失主</el-button>
+
                             </div>
                         </div>
                     </el-col>
@@ -42,6 +43,20 @@
         <el-dialog title="详细信息" :visible.sync="viewVisible" width="55%" :close-on-click-modal="false" destroy-on-close>
             <div v-html="viewData" class="w-e-text w-e-text-container"></div>
         </el-dialog>
+        <el-dialog title="留言信息" :visible.sync="fromVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
+            <el-form label-width="100px" style="padding-right: 50px">
+                <el-form-item prop="title" label="友情提示">
+                    <span style="color: red">请详细描述你的联系方式，方便对方联系到你</span>
+                </el-form-item>
+                <el-form-item prop="content" label="留言内容">
+                    <el-input type="textarea" :rows="5" v-model="content" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="fromVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submit">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -51,6 +66,7 @@
 
         data() {
             return {
+                user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
                 name: null,
                 pageNum: 1,
                 pageSize: 8,
@@ -58,6 +74,9 @@
                 lostData: [],
                 viewVisible: false,
                 viewData: null,
+                fromVisible: false,
+                content: null,
+                form: {}
 
             }
         },
@@ -66,6 +85,33 @@
         },
         // methods：本页面所有的点击事件或者其他函数定义区
         methods: {
+            contact(item) {
+                this.form = JSON.parse(JSON.stringify(item))
+                this.fromVisible = true
+            },
+            submit() {
+                if (this.user.id === this.form.userId) {
+                    this.$message.warning('您不能联系自己')
+                    this.content = null
+                    return
+                }
+                let data = {
+                    articleId: this.form.id,
+                    type: '失物广场',
+                    fromId: this.user.id,
+                    toId: this.form.userId,
+                    content: this.content
+                }
+                this.$request.post('/message/add', data).then(res => {
+                    if (res.code === '200') {
+                        this.$message.success('留言成功，等待对方联系')
+                        this.content = null
+                        this.fromVisible = false
+                    } else {
+                        this.$message.error(res.msg)
+                    }
+                })
+            },
             load(pageNum) {
                 if (pageNum) this.pageNum = pageNum
                 this.$request.get('/lost/selectPage', {
