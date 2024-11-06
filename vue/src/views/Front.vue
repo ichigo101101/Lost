@@ -33,6 +33,13 @@
                 <el-dropdown-item>
                     <div style="text-decoration: none" @click="navTo('/front/myLost')">我的失物</div>
                 </el-dropdown-item>
+
+                <el-dropdown-item>
+                    <div style="text-decoration: none" @click="navTo('/front/toMe')">联系我的</div>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                    <div style="text-decoration: none" @click="navTo('/front/toOther')">我联系的</div>
+                </el-dropdown-item>
               <el-dropdown-item>
                 <div style="text-decoration: none" @click="logout">退出</div>
               </el-dropdown-item>
