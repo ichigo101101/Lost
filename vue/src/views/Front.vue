@@ -40,6 +40,9 @@
                 <el-dropdown-item>
                     <div style="text-decoration: none" @click="navTo('/front/toOther')">我联系的</div>
                 </el-dropdown-item>
+                <el-dropdown-item>
+                    <div style="text-decoration: none" @click="navTo('/front/myFound')">我的招领</div>
+                </el-dropdown-item>
               <el-dropdown-item>
                 <div style="text-decoration: none" @click="logout">退出</div>
               </el-dropdown-item>

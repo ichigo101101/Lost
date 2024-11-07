@@ -24,6 +24,7 @@ const routes = [
       { path: 'notice', name: 'Notice', meta: { name: '公告信息' }, component: () => import('../views/manager/Notice') },
       { path: 'user', name: 'User', meta: { name: '用户信息' }, component: () => import('../views/manager/User') },
       { path: 'lost', name: 'Lost', meta: { name: '失物信息' }, component: () => import('../views/manager/Lost') },
+      { path: 'found', name: 'Found', meta: { name: '招领信息' }, component: () => import('../views/manager/Found') },
     ]
   },
   {
@@ -37,6 +38,7 @@ const routes = [
       { path: 'lostSquare', name: 'LostSquare', meta: { name: '失物广场' }, component: () => import('../views/front/LostSquare') },
       { path: 'toMe', name: 'ToMe', meta: { name: '联系我的' }, component: () => import('../views/front/ToMe') },
       { path: 'toOther', name: 'ToOther', meta: { name: '我联系的' }, component: () => import('../views/front/ToOther') },
+      { path: 'myFound', name: 'MyFound', meta: { name: '我的招领' }, component: () => import('../views/front/MyFound') },
     ]
   },
   { path: '/login', name: 'Login', meta: { name: '登录' }, component: () => import('../views/Login.vue') },
