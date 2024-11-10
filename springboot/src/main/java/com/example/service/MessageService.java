@@ -1,8 +1,16 @@
 package com.example.service;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.example.common.enums.TypeEnum;
+import com.example.entity.Found;
+import com.example.entity.Lost;
 import com.example.entity.Message;
+import com.example.entity.User;
+import com.example.mapper.FoundMapper;
+import com.example.mapper.LostMapper;
 import com.example.mapper.MessageMapper;
+import com.example.mapper.UserMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -15,6 +23,12 @@ public class MessageService {
 
     @Resource
     private MessageMapper messageMapper;
+    @Resource
+    private UserMapper userMapper;
+    @Resource
+    private FoundMapper foundMapper;
+    @Resource
+    private LostMapper lostMapper;
 
     /**
      * 新增
@@ -67,6 +81,26 @@ public class MessageService {
     public PageInfo<Message> selectPage(Message message, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Message> list = messageMapper.selectAll(message);
+        for (Message dbMessage : list) {
+            User fromUser = userMapper.selectById(dbMessage.getFromId());
+            User toUser = userMapper.selectById(dbMessage.getToId());
+            dbMessage.setFromName(fromUser.getName());
+            dbMessage.setToName(toUser.getName());
+            // 通过这个type来区分该条信息是从失物广场来的还是从招领广场来的
+            if (TypeEnum.LOST.type.equals(dbMessage.getType())) {
+                Lost lost = lostMapper.selectById(dbMessage.getArticleId());
+                if (ObjectUtil.isNotEmpty(lost)) {
+                    dbMessage.setArticleName(lost.getName());
+                    dbMessage.setArticleImg(lost.getImg());
+                }
+            } else {
+                Found found = foundMapper.selectById(dbMessage.getArticleId());
+                if (ObjectUtil.isNotEmpty(found)) {
+                    dbMessage.setArticleName(found.getName());
+                    dbMessage.setArticleImg(found.getImg());
+                }
+            }
+        }
         return PageInfo.of(list);
     }
 

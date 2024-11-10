@@ -1,7 +1,7 @@
 <template>
     <div class="main-content">
         <div style="width: 70%; margin: 20px auto">
-            <div style="color: #8b4513; font-size: 16px; font-weight: 550">这里是失物广场，失主一定很急，如果您看到了，请及时联系失主哦！</div>
+            <div style="color: #8b4513; font-size: 16px; font-weight: 550">快来看看有没有你丢失的物品吧！如果有，请记得答谢一下帮你找到的小伙伴哦~</div>
             <div style="margin-top: 30px">
                 <el-input placeholder="请输入物品名称查询" style="width: 200px" v-model="name" size="mini"></el-input>
                 <el-button type="info" plain style="margin-left: 10px" @click="load(1)" size="mini">查询</el-button>
@@ -21,8 +21,7 @@
                             </div>
                             <div style="margin-top: 20px">
                                 <el-button type="info" size="mini" @click="viewContent(item.content)">查看详情</el-button>
-                                <el-button type="success" size="mini" @click="contact(item)">联系失主</el-button>
-
+                                <el-button type="success" size="mini" @click="contact(item)">联系他</el-button>
                             </div>
                         </div>
                     </el-col>
@@ -77,7 +76,6 @@
                 fromVisible: false,
                 content: null,
                 form: {}
-
             }
         },
         mounted() {
@@ -85,36 +83,9 @@
         },
         // methods：本页面所有的点击事件或者其他函数定义区
         methods: {
-            contact(item) {
-                this.form = JSON.parse(JSON.stringify(item))
-                this.fromVisible = true
-            },
-            submit() {
-                if (this.user.id === this.form.userId) {
-                    this.$message.warning('您不能联系自己')
-                    this.content = null
-                    return
-                }
-                let data = {
-                    articleId: this.form.id,
-                    type: '失物广场',
-                    fromId: this.user.id,
-                    toId: this.form.userId,
-                    content: this.content
-                }
-                this.$request.post('/message/add', data).then(res => {
-                    if (res.code === '200') {
-                        this.$message.success('留言成功，等待对方联系')
-                        this.content = null
-                        this.fromVisible = false
-                    } else {
-                        this.$message.error(res.msg)
-                    }
-                })
-            },
             load(pageNum) {
                 if (pageNum) this.pageNum = pageNum
-                this.$request.get('/lost/selectPage', {
+                this.$request.get('/found/selectPage', {
                     params: {
                         pageNum: this.pageNum,
                         pageSize: this.pageSize,
@@ -136,6 +107,33 @@
             viewContent(content) {
                 this.viewData = content
                 this.viewVisible = true
+            },
+            contact(item) {
+                this.form = JSON.parse(JSON.stringify(item))
+                this.fromVisible = true
+            },
+            submit() {
+                if (this.user.id === this.form.userId) {
+                    this.$message.warning('您不能联系自己')
+                    this.content = null
+                    return
+                }
+                let data = {
+                    articleId: this.form.id,
+                    type: '招领广场',
+                    fromId: this.user.id,
+                    toId: this.form.userId,
+                    content: this.content
+                }
+                this.$request.post('/message/add', data).then(res => {
+                    if (res.code === '200') {
+                        this.$message.success('留言成功，等待对方联系')
+                        this.content = null
+                        this.fromVisible = false
+                    } else {
+                        this.$message.error(res.msg)
+                    }
+                })
             }
         }
     }
