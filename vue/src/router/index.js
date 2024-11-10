@@ -36,6 +36,7 @@ const routes = [
       { path: 'person', name: 'Person', meta: { name: '个人信息' }, component: () => import('../views/front/Person') },
       { path: 'myLost', name: 'MyLost', meta: { name: '我的失物' }, component: () => import('../views/front/MyLost') },
       { path: 'lostSquare', name: 'LostSquare', meta: { name: '失物广场' }, component: () => import('../views/front/LostSquare') },
+      { path: 'foundSquare', name: 'FoundSquare', meta: { name: '招领广场' }, component: () => import('../views/front/FoundSquare') },
       { path: 'toMe', name: 'ToMe', meta: { name: '联系我的' }, component: () => import('../views/front/ToMe') },
       { path: 'toOther', name: 'ToOther', meta: { name: '我联系的' }, component: () => import('../views/front/ToOther') },
       { path: 'myFound', name: 'MyFound', meta: { name: '我的招领' }, component: () => import('../views/front/MyFound') },
