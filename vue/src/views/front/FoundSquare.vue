@@ -9,7 +9,7 @@
             </div>
             <div style="margin-top: 30px">
                 <el-row :gutter="20">
-                    <el-col :span="6" v-for="item in lostData" style="margin-bottom: 20px">
+                    <el-col :span="6" v-for="item in lostData" :key="item.id" style="margin-bottom: 20px">
                         <div class="transition card">
                             <div style="display: flex">
                                 <img :src="item.img" alt="" style="height: 75px; width: 75px; border: 1px solid #eeeeee; border-radius: 10px">
@@ -48,7 +48,6 @@
 <script>
     import E from 'wangeditor'
     export default {
-
         data() {
             return {
                 name: null,
@@ -58,13 +57,11 @@
                 lostData: [],
                 viewVisible: false,
                 viewData: null,
-
             }
         },
         mounted() {
             this.load(1)
         },
-        // methods：本页面所有的点击事件或者其他函数定义区
         methods: {
             load(pageNum) {
                 if (pageNum) this.pageNum = pageNum
