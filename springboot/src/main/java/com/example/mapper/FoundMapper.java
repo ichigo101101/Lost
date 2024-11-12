@@ -32,7 +32,7 @@ public interface FoundMapper {
      */
     List<Found> selectAll(Found found);
 
-    @Select("select * from found where status = '丢失中' order by id desc limit 4")
+    @Select("select * from found where status = '未找到失主' order by id desc limit 4")
     List<Found> selectNew4();
 
 }
