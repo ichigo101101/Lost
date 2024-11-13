@@ -40,6 +40,7 @@ const routes = [
       { path: 'toMe', name: 'ToMe', meta: { name: '联系我的' }, component: () => import('../views/front/ToMe') },
       { path: 'toOther', name: 'ToOther', meta: { name: '我联系的' }, component: () => import('../views/front/ToOther') },
       { path: 'myFound', name: 'MyFound', meta: { name: '我的招领' }, component: () => import('../views/front/MyFound') },
+      { path: 'comment', name: 'Comment', meta: { name: '反馈建议' }, component: () => import('../views/front/Comment') },
     ]
   },
   { path: '/login', name: 'Login', meta: { name: '登录' }, component: () => import('../views/Login.vue') },

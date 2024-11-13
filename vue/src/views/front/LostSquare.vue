@@ -1,7 +1,9 @@
 <template>
     <div class="main-content">
         <div style="width: 70%; margin: 20px auto">
-            <div style="color: #8b4513; font-size: 16px; font-weight: 550">这里是失物广场，失主一定很急，如果您看到了，请及时联系失主哦！</div>
+            <div style="color: #8b4513; font-size: 16px; font-weight: 550">
+                这里是失物广场，失主一定很急，如果您看到了，请及时联系失主哦！
+            </div>
             <div style="margin-top: 30px">
                 <el-input placeholder="请输入物品名称查询" style="width: 200px" v-model="name" size="mini"></el-input>
                 <el-button type="info" plain style="margin-left: 10px" @click="load(1)" size="mini">查询</el-button>
@@ -9,7 +11,8 @@
             </div>
             <div style="margin-top: 30px">
                 <el-row :gutter="20">
-                    <el-col :span="6" v-for="item in lostData" style="margin-bottom: 20px">
+                    <!-- 添加 key 属性，假设每个 item 有一个唯一的 id -->
+                    <el-col :span="6" v-for="item in lostData" :key="item.id" style="margin-bottom: 20px">
                         <div class="transition card">
                             <div style="display: flex">
                                 <img :src="item.img" alt="" style="height: 75px; width: 75px; border: 1px solid #eeeeee; border-radius: 10px">
@@ -48,7 +51,6 @@
 <script>
     import E from 'wangeditor'
     export default {
-
         data() {
             return {
                 name: null,
@@ -58,13 +60,11 @@
                 lostData: [],
                 viewVisible: false,
                 viewData: null,
-
             }
         },
         mounted() {
             this.load(1)
         },
-        // methods：本页面所有的点击事件或者其他函数定义区
         methods: {
             load(pageNum) {
                 if (pageNum) this.pageNum = pageNum
