@@ -45,6 +45,7 @@
             <el-menu-item index="/notice">公告信息</el-menu-item>
               <el-menu-item index="/lost">失物信息</el-menu-item>
               <el-menu-item index="/found">招领信息</el-menu-item>
+              <el-menu-item index="/comment">反馈建议</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user">

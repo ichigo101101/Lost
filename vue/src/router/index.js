@@ -25,6 +25,7 @@ const routes = [
       { path: 'user', name: 'User', meta: { name: '用户信息' }, component: () => import('../views/manager/User') },
       { path: 'lost', name: 'Lost', meta: { name: '失物信息' }, component: () => import('../views/manager/Lost') },
       { path: 'found', name: 'Found', meta: { name: '招领信息' }, component: () => import('../views/manager/Found') },
+      { path: 'comment', name: 'Comment', meta: { name: '反馈建议' }, component: () => import('../views/manager/Comment') },
     ]
   },
   {
