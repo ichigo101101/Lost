@@ -73,6 +73,7 @@
                         pageNum: this.pageNum,
                         pageSize: this.pageSize,
                         name: this.name,
+                        status:"丢失中"
                     }
                 }).then(res => {
                     this.lostData = res.data?.list
